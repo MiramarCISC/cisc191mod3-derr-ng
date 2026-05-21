@@ -2,34 +2,56 @@ package edu.sdccd.cisc191;
 
 import java.util.Objects;
 
+/**
+ * Rectangle implementation of Shape
+ */
 public class Rectangle extends Shape {
-    private double width;
-    private double height;
 
-    public Rectangle(String name, double width, double height) {
+    private final double length;
+    private final double width;
+
+    public Rectangle(String name, double length, double width) {
         super(name);
 
-        if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Need positive values");
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name must not be null or blank");
         }
+
+        if (length <= 0 || width <= 0) {
+            throw new IllegalArgumentException("Length and width must be positive values");
+        }
+
+        this.length = length;
         this.width = width;
-        this.height = height;
     }
+
     @Override
     public double area() {
-        return width * height;
+        return length * width;
     }
+
     @Override
     public double perimeter() {
-        return 2 * (width + height);
+        return 2 * (length + width);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Rectangle)) return false;
+        Rectangle other = (Rectangle) obj;
+        return getName().equals(other.getName()) &&
+                Double.compare(length, other.length) == 0 &&
+                Double.compare(width, other.width) == 0;
     }
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Rectangle)) return false;
-        Rectangle other = (Rectangle) o;
-        return Double.compare(width, other.width) == 0 && Double.compare(height, other.height) == 0
-                && Objects.equals(name, other.name);
-
+    public int hashCode() {
+        return Objects.hash(getName(), length, width);
+    }
+    @Override
+    public String toString() {
+        return "Rectangle{name='" + getName() +
+                "', length=" + length +
+                ", width=" + width + "}";
     }
 }
